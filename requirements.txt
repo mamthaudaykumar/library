@@ -1,0 +1,21 @@
+# requirements.txt
+
+fastapi
+uvicorn[standard]
+
+sqlalchemy>=2.0
+alembic
+
+pydantic>=2.0
+pandas
+
+# Optional: for interactive API docs
+python-multipart
+#fastapi-code-generator
+#setuptools
+#typed-ast
+
+fastapi==0.100.0
+uvicorn[standard]==0.22.0
+alembic
+pytest

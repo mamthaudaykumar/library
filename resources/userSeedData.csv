@@ -1,0 +1,6 @@
+id,name,email,phone,user_type
+1,Alice Smith,alice@example.com,+441234567890,MEMBER
+2,Bob Johnson,bob@example.com,+441234567891,LIBRARIAN
+3,Carol Lee,carol@example.com,+441234567892,MEMBER
+4,David Green,david@example.com,+441234567893,MEMBER
+5,Eva Brown,eva@example.com,+441234567894,ADMIN

@@ -1,0 +1,428 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: "0.1.0"
+paths:
+  /api/v1/book/:
+    get:
+      tags: [Book]
+      summary: Get All Books
+      operationId: get_all_books_api_v1_book__get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Books Api V1 Book  Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+    post:
+      tags: [Book]
+      summary: Create books
+      operationId: createBooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookRequest"
+      responses:
+        "201":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookCreateResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /api/v1/book/{book_id}:
+    put:
+      tags: [Book]
+      summary: Update Book
+      operationId: update_book_api_v1_book__book_id__put
+      parameters:
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookRequest"
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookUpdateResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    get:
+      tags: [Book]
+      summary: Get Book
+      operationId: get_book_api_v1_book__book_id__get
+      parameters:
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /api/v1/book/bookstatus/update:
+    put:
+      tags: [Book]
+      summary: Update book status
+      operationId: update_book_status
+      parameters:
+        - name: book_id
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookBorrowStatusRequest"
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /api/v1/book/books/search:
+    get:
+      tags: [Book]
+      summary: Search books by author and/or title
+      operationId: search_books_api_v1_book_books_search_get
+      parameters:
+        - name: author
+          in: query
+          required: false
+          description: Filter by author name
+          schema:
+            anyOf:
+              - type: string
+              - type: "null"
+        - name: title
+          in: query
+          required: false
+          description: Filter by book title
+          schema:
+            anyOf:
+              - type: string
+              - type: "null"
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Search Books Api V1 Book Books Search Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /api/v1/book/report/rented-books:
+    get:
+      tags: [Book]
+      summary: Get report of currently rented books and rental duration
+      operationId: getRentedBooksReport
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/v1/user/{user_id}/book/{book_id}/wishlist:
+    post:
+      tags: ["User – Wishlist"]
+      summary: Add a book to wishlist
+      operationId: addToWishlist
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    delete:
+      tags: ["User – Wishlist"]
+      summary: Remove a book from wishlist
+      operationId: removeFromWishlist
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Successful Response
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /api/v1/user/{user_id}/wishlist:
+    get:
+      tags: ["User – Wishlist"]
+      summary: List a user's wishlist
+      operationId: listWishlist
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Listwishlist
+                type: array
+                items:
+                  $ref: "#/components/schemas/WishlistItemResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /:
+    get:
+      summary: Health
+      operationId: health__get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+
+components:
+  schemas:
+    BookBorrowStatusRequest:
+      title: BookBorrowStatusRequest
+      type: object
+      required: [user_id, book_id, status]
+      properties:
+        user_id:
+          type: integer
+          title: User Id
+          description: ID of the user borrowing the book
+        book_id:
+          type: integer
+          title: Book Id
+          description: ID of the book being borrowed
+        status:
+          type: string
+          title: Status
+          description: Borrow status. RENTED/RETURNED
+    BookCreateResponse:
+      title: BookCreateResponse
+      type: object
+      required: [id, book_id, isbn, author, title]
+      description: Returned right after a book is created.
+      properties:
+        id:
+          type: integer
+        book_id:
+          type: integer
+        isbn:
+          type: string
+        author:
+          type: string
+        publication_year:
+          anyOf:
+            - type: integer
+            - type: "null"
+        title:
+          type: string
+        language:
+          anyOf:
+            - type: string
+            - type: "null"
+    BookRequest:
+      title: BookRequest
+      type: object
+      required: [book_id, isbn, author, publication_year, title, language]
+      properties:
+        book_id:
+          type: integer
+        isbn:
+          type: string
+        author:
+          type: string
+        publication_year:
+          type: integer
+          minimum: 0
+        title:
+          type: string
+        language:
+          type: string
+    BookResponse:
+      title: BookResponse
+      type: object
+      required: [id, book_id, isbn, author, title]
+      properties:
+        id:
+          type: integer
+        book_id:
+          type: integer
+        isbn:
+          type: string
+        author:
+          type: string
+        publication_year:
+          anyOf:
+            - type: integer
+            - type: "null"
+        title:
+          type: string
+        language:
+          anyOf:
+            - type: string
+            - type: "null"
+        status_details:
+          anyOf:
+            - $ref: "#/components/schemas/StatusDetails"
+            - type: "null"
+    BookUpdateResponse:
+      title: BookUpdateResponse
+      type: object
+      required: [id, book_id, isbn, author, title]
+      description: Returned after a book is updated.
+      properties:
+        id:
+          type: integer
+        book_id:
+          type: integer
+        isbn:
+          type: string
+        author:
+          type: string
+        publication_year:
+          anyOf:
+            - type: integer
+            - type: "null"
+        title:
+          type: string
+        language:
+          anyOf:
+            - type: string
+            - type: "null"
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          type: array
+          title: Detail
+          items:
+            $ref: "#/components/schemas/ValidationError"
+    ValidationError:
+      title: ValidationError
+      type: object
+      required: [loc, msg, type]
+      properties:
+        loc:
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+        msg:
+          type: string
+        type:
+          type: string
+    StatusDetails:
+      title: StatusDetails
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+        borrowerId:
+          anyOf:
+            - type: integer
+            - type: "null"
+        borrowerName:
+          anyOf:
+            - type: string
+            - type: "null"
+        borrowedOn:
+          anyOf:
+            - type: string
+              format: date-time
+            - type: "null"
+    WishlistItemResponse:
+      title: WishlistItemResponse
+      type: object
+      required: [id, user_id, book_id]
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        book_id:
+          type: integer
